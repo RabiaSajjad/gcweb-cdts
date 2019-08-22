@@ -1,0 +1,21 @@
+global-styling:
+  css:
+    theme:
+      css/style.css: {}
+      /libraries/theme-gcweb/css/theme.min.css: { browsers: { IE: 'gte IE 9', '!IE': true }, minified: true }
+      /libraries/theme-gcweb/css/ie8-theme.min.css: { preprocess: false, browsers: { IE: 'lt IE 9', '!IE': false }, minified: true }
+      /libraries/theme-gcweb/css/wet-boew.min.css: { browsers: { IE: 'gte IE 9', '!IE': true }, minified: true }
+      /libraries/theme-gcweb/css/ie8-wet-boew.min.css: { preprocess: false, browsers: { IE: 'lt IE 9', '!IE': false }, minified: true }
+      /libraries/theme-gcweb/css/wet-boew-overrides.min.css: { minified: true }
+      /libraries/theme-gcweb/css/small-component.min.css: { minified: true }
+      /libraries/theme-gcweb/css/messages.min.css: { browsers: { IE: 'gte IE 9', '!IE': true }, minified: true }
+      /libraries/theme-gcweb/css/messages-ie.min.css: { preprocess: false, browsers: { IE: 'lt IE 9', '!IE': false }, minified: true }
+  js:
+    /libraries/wet-boew/js/ie8-wet-boew.min.js: { preprocess: false, browsers: { IE: 'lt IE 9', '!IE': false }, minified: false, weight: -1 }
+    /libraries/wet-boew/js/wet-boew.min.js: { preprocess: false, browsers: { IE: 'gte IE 9', '!IE': true }, minified: false, weight: -1 }
+    /libraries/wet-boew/js/ie8-wet-boew2.min.js: { preprocess: false, browsers: { IE: 'lt IE 9', '!IE': false }, minified: false, weight: -1 }
+    /libraries/theme-gcweb/js/theme.min.js: { preprocess: false, minified: false }
+    #'https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/cdts/compiled/soyutils.js': { type: external, minified: true }
+    #'https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/cdts/compiled/wet-en.js': { type: external, minified: true }
+  dependencies:
+    - core/jquery

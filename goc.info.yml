@@ -1,0 +1,19 @@
+core: 8.x
+type: theme
+base theme: bartik
+
+name: 'Government of Canada - GCWeb CDTS'
+description: 'Theme implementation for Government of Canada GCWeb using WET-BOEW CDTS'
+package: 'Government of Canada'
+
+regions:
+  language_toggle: 'Language Toggle'
+  header: 'Header'
+  highlighted: 'Highlighted'
+  breadcrumb: 'Breadcrumbs'
+  help: 'Help'
+  content: 'Content'
+  footer: 'Footer'
+
+libraries:
+  - 'goc/global-styling'

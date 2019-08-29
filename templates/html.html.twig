@@ -39,21 +39,22 @@
     <css-placeholder token="{{ placeholder_token }}">
     <js-placeholder token="{{ placeholder_token }}">
     <!-- CDTS HEAD REFERENCE -->
-    <!-- Load closure template scripts -->
-    <script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/cdts/compiled/soyutils.js"></script>
-    <script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/cdts/compiled/wet-en.js"></script>
     <noscript>
+      <!--[if gte IE 9 | !IE ]><!-->
+      <link href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/assets/favicon.ico" rel="icon" type="image/x-icon">
+      <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/css/theme.min.css">
+      <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/cdts/cdtsfixes.css">
+      <!--<![endif]-->
+      <!--[if lt IE 9]>
+      <link href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/assets/favicon.ico" rel="shortcut icon" />
+      <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/css/ie8-theme.min.css" />
+      <![endif]-->
+      <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/css/noscript.min.css" />
+      <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/cdts/cdtsnoscript.css" />
     </noscript>
-    <!-- Write closure template -->
-    <script>
-      document.write(wet.builder.refTop({
-        "cdnEnv" : "prod",
-        "isApplication": true
-      }));
-    </script>
     <!-- END OF CDTS HEAD REFERENCE -->
   </head>
-  <body{{ attributes.addClass(body_classes) }}>
+  <body{{ attributes.addClass(body_classes).setAttribute('vocab', 'http://schema.org/').setAttribute('typeof', 'WebPage') }}>
     {#
       Keyboard navigation/accessibility link to main content section in
       page.html.twig.

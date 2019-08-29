@@ -6,9 +6,72 @@
  */
 
 /**
+ * Implements hook_page_attachments_alter()
+ */
+function goc_page_attachments_alter(&$page) {
+  $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+  // specify the version for WET-BOEW CDTS
+  $gcweb_version = '4_0_31';
+  $gcweb_url = 'https://www.canada.ca/etc/designs/canada/cdts/gcweb/v' . $gcweb_version;
+
+  // CDTS - Load template scripts
+  $page['#attached']['html_head'][] = [
+    [
+      '#type' => 'html_tag',
+      '#tag' => 'script',
+      '#attributes' => [ 'src' => $gcweb_url . '/cdts/compiled/soyutils.js'],
+    ],
+    'gcweb_utils',
+  ];
+
+  $page['#attached']['html_head'][] = [
+    [
+      '#type' => 'html_tag',
+      '#tag' => 'script',
+      '#attributes' => [ 'src' => $gcweb_url . '/cdts/compiled/wet-' . $langCode . '.js'],
+    ],
+    'gcweb_wet',
+  ];
+
+  // Load WET-BOEW references
+  $page['#attached']['library'][] = 'goc/wet-load';
+}
+
+/**
  * Implements hook_preprocess_HOOK() for links--language-block.html.twig
  * provide language variable to the twig template
  */
 function goc_preprocess_links__language_block(&$variables) {
   $variables['language'] = \Drupal::languageManager()->getCurrentLanguage()->getId();
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page.html.twig
+ * redirect non-admin users of external pages to the external page
+ * setup variables: date modified, canada.ca search form link and mega menu link for twig template
+ */
+function goc_preprocess_page(&$variables) {
+  // find language
+  $variables['langcode'] = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+  if (is_object($node = \Drupal::request()->get('node'))) {
+    // redirect all users except comment moderators and admins to dataset page
+    if ($node->getType() == 'external') {
+      $role = \Drupal::currentUser()->getRoles();
+      if (!(in_array('comment_moderator',$role)) && !(in_array('administrator',$role))) {
+        $translated_node = $node->getTranslation($variables['langcode']);
+        $path = $translated_node->get('field_url')->getValue();
+        $response = new TrustedRedirectResponse($path[0]['uri']);
+        $response->send();
+      }
+    }
+
+    // date modified
+    $time = $node->getChangedTime();
+    $variables['date_modified'] = \Drupal::service('date.formatter')->format($time, 'custom', 'Y-m-d');
+  }
+  else {
+    $variables['date_modified'] = \Drupal::service('date.formatter')->format(time(), 'custom', 'Y-m-d');
+  }
 }

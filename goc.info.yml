@@ -9,6 +9,7 @@ package: 'Government of Canada'
 regions:
   language_toggle: 'Language Toggle'
   header: 'Header'
+  navigation: 'Navigation'
   highlighted: 'Highlighted'
   breadcrumb: 'Breadcrumbs'
   help: 'Help'

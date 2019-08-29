@@ -50,13 +50,15 @@
  * @see html.html.twig
  */
 #}
+{% set container = theme.settings.fluid_container ? 'container-fluid' : 'container' %}
+
 <div id="page-wrapper">
   <div id="page">
     <div id="header-wrapper">
 
       <!-- Language Selection -->
       <section id="wb-lng" class="text-right">
-        <div class="container">
+        <div class={{ container }}>
           <h2 class="wb-inv">Language selection</h2>
           {{ page.language_toggle }}
         </div>
@@ -64,16 +66,50 @@
 
       <!-- CDTS TOP REFERENCE -->
       <div id="def-top">
-      </div>
-      <!-- Write closure template -->
-      <script>
-        var defTop = document.getElementById("def-top");
-        defTop.outerHTML = wet.builder.top({
-          "lngLinks": false,
-          "breadcrumbs": false
-        });
-      </script>
+        <!-- Write closure fall-back -->
+        {# Navbar #}
+        {% if page.navigation %}
+          {% block navbar %}
 
+            <header role="banner">
+              <div id="wb-bnr" class="{{ container }}" >
+
+                <div class="row">
+                  <div class="brand col-xs-5 col-md-4">
+                    <a href="https://www.canada.ca/{{ langcode }}.html"><img alt="" src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_31/assets/sig-blk-{{ langcode }}.svg"><span class="wb-inv"> Government of Canada / <span lang="fr">Gouvernement du Canada</span></span></a>
+                  </div>
+                  <section id="wb-srch" class="col-lg-8 text-right visible-md visible-lg">
+                    <h2>{{ 'Search'|t }}</h2>
+                    <form name="cse-search-box" class="form-inline" role="search" action="https://www.canada.ca/{{ langcode }}/sr/srb.html" method="get">
+                      <div class="form-group">
+                        <label for="wb-srch-q" class="wb-inv">{{ 'Search Canada.ca'|t }}</label>
+                        <input id="wb-srch-q" list="wb-srch-q-ac" class="wb-srch-q form-control" name="q" type="search" value="" size="34" maxlength="170" placeholder="{{ 'Search Canada.ca'|t }}">
+                        <datalist id="wb-srch-q-ac">
+                        </datalist>
+                      </div>
+                      <div class="form-group submit">
+                        <button type="submit" id="wb-srch-sub" name="wb-srch-sub" class="btn btn-primary btn-small"><span class="glyphicon-search glyphicon"></span><span class="wb-inv">Search</span></button>
+                      </div>
+                    </form>
+                  </section>
+                </div>
+              </div>
+
+              <nav class="gcweb-menu" typeof="SiteNavigationElement">
+                <div class="{{ container }}">
+                  <h2 class="wb-inv">Menu</h2>
+                  <button type="button" aria-haspopup="true" aria-expanded="false">Menu<span class="wb-inv"> principal</span> <span class="expicon glyphicon glyphicon-chevron-down"></span></button>
+                  <ul role="menu" aria-orientation="vertical" data-ajax-replace="https://www.canada.ca/content/dam/canada/sitemenu/sitemenu-v2-{{ langcode }}.html">
+                  </ul>
+                </div>
+              </nav>
+
+              {{ page.breadcrumb }}
+            </header>
+          {% endblock %}
+        {% endif %}
+
+      </div>
     </div>
 
     <!-- System Messages -->
@@ -98,29 +134,34 @@
         <main id="content" class="column main-content" role="main">
           <section class="section">
             <a id="main-content" tabindex="-1"></a>
-            <div class="container">
+            <div class={{ container }}>
               {{ page.content }}
-
-              <!-- FEATURES -->
-              <aside class="gc-nttvs">
-                <h2>Government of Canada activities and initiatives</h2>
-                <div id="gcwb_prts" class="wb-eqht row" data-ajax-replace="https://cdn.canada.ca/gcweb-cdn-live/features/features-en.html">
-                  <p class="mrgn-lft-md"><a href="https://www.canada.ca/activities.html">Access Government of Canada activities and initiatives</a></p>
-                </div>
-              </aside>
 
               <!-- CDTS PREFOOTER REFERENCE -->
               <div id="def-preFooter">
+                <!-- Write closure fall-back -->
+                <div class="pagedetails">
+                  <div class="row">
+                    <div class="col-sm-4 col-md-3 col-lg-3">
+                      <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"><p>
+                          <a class="btn btn-default btn-block" href="/forms/contact-us">
+                            <span class="glyphicon glyphicon-comment mrgn-rght-sm">&nbsp;</span>
+                            {{ 'Feedback'|t }}
+                            <span class="wb-inv">{{ 'About the Open Government website'|t }}</span>
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+                    <!-- Share button -->
+                    <div class="wb-share col-sm-4 col-md-3 col-sm-offset-4 col-md-offset-6 col-lg-offset-6" data-wb-share='{"lnkClass": "btn btn-default btn-block"}'></div>
+                    <!-- END Share button -->
+                  </div>
+                  <dl id="wb-dtmd">
+                    <dt>{{ 'Date modified:'|t }}</dt>
+                    <dd><time property="dateModified">{{ date_modified }}</time></dd>
+                  </dl>
+                </div>
               </div>
-              <script>
-                var defPreFooter = document.getElementById("def-preFooter");
-                defPreFooter.outerHTML = wet.builder.preFooter({
-                  "showFeedback" : "/contact",
-                  "showShare" : ["email", "facebook", "linkedin", "twitter"],
-                  "dateModified": "2017-08-01",
-                  "showFeatures": true
-                });
-              </script>
             </div>
 
           </section>
@@ -129,54 +170,32 @@
       </div>
     </div>
 
-    <!-- CDTS FOOTER FOOTER -->
+    <!-- CDTS FOOTER REFERENCE -->
     <div id="def-footer">
+      <!-- Write closure fall-back -->
+      {% if page.footer %}
+        {% block footer %}
+          <footer id="wb-info">
+            <div class="landscape">
+              {{ page.footer }}
+            </div>
+            <div class="brand">
+              <div class="{{ container }}">
+                <div class="row">
+                  {{ page.branding }}
+                  <div class="col-xs-6 visible-sm visible-xs tofpg">
+                    <a href="#wb-cont">{{ 'Top of page'|t }} <span class="glyphicon glyphicon-chevron-up"></span></a>
+                  </div>
+                  <div class="col-xs-6 col-md-2 text-right">
+                    <object type="image/svg+xml" tabindex="-1" role="img" data="/libraries/theme-gcweb/assets/wmms-blk.svg" aria-label="{{ 'Symbol of the Government of Canada'|t }}"></object>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </footer>
+        {% endblock %}
+      {% endif %}
     </div>
-    <!-- Write closure template -->
-    <script>
-      var defFooter = document.getElementById("def-footer");
-      defFooter.outerHTML = wet.builder.appFooter({
-
-        "footerSections": [{
-          "href": "#",
-          "text": "Portal footer link 1"
-        }, {
-          "href": "#",
-          "text": "Portal footer link 2"
-        }, {
-          "href": "#",
-          "text": "Portal footer link 3",
-          "newWindow": true
-        }, {
-          "href": "#",
-          "text": "Portal footer link 4"
-        }, {
-          "href": "#",
-          "text": "Portal footer link 5"
-        }, {
-          "href": "#",
-          "text": "Portal footer link 6"
-        }, {
-          "href": "#",
-          "text": "Portal footer link 7"
-        }, {
-          "href": "#",
-          "text": "Portal footer link 8"
-        }, {
-          "href": "#",
-          "text": "Portal footer link 9"
-        }],
-        "showFeatures": true
-      });
-    </script>
-    <!-- Write closure template -->
-    <script>
-      document.write(wet.builder.refFooter({
-
-        "isApplication": true
-      }));
-    </script>
-    <!-- END OF CDTS FOOTER REFERENCE -->
 
   </div>
 </div>
